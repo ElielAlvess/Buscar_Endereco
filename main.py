@@ -45,8 +45,6 @@ for i in range(len(df)):
     if contador == 10:
         endereco = df.to_excel('Enderecos.xlsx')
         contador = 0
-        print('base provisoria')
-        print(cep)
     else:
         contador = contador + 1
 
