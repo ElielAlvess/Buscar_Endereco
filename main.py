@@ -12,12 +12,13 @@ df = pd.read_excel(r'ceps.xlsx')
 #Iterando sobre cada cep da base.
 for i in range(len(df)):
     cep = df.loc[i, 'CEP']
-    #consultando os ceps pela API e retornandno um JSON com os dados requisitados
+
+    #consultando os ceps pela API e retornandno um JSON com os dados requisitados.
     link = f'https://viacep.com.br/ws/{cep}/json/'
     requisicao = requests.get(link)
     requisicao_json = requisicao.json()
 
-    # Tratando erro de dados ausentes dentro do Json requisitado.
+    #Tratando erro de dados ausentes dentro do Json requisitado.
     try:
         uf = requisicao_json['uf']
         cidade = requisicao_json['localidade']
@@ -32,14 +33,14 @@ for i in range(len(df)):
         bairro = None
         complemento = None
 
-    # Criando novas colunas dentro da base de CEP
+    #Criando novas colunas dentro da base de CEP.
     df.loc[i, 'UF'] = uf
     df.loc[i, 'Cidade'] = cidade
     df.loc[i, 'Logradouro'] = logradouro
     df.loc[i, 'Bairro'] = bairro
     df.loc[i, 'Complemento'] = complemento
 
-# Gera uma base provisoria a cada 10 consultas para caso haja algum erro e nao precisemos remoçar do zero
+#Gera uma base provisoria a cada 10 consultas para caso haja algum erro e nao precisemos recomeçar do zero.
 
     if contador == 10:
         endereco = df.to_excel('Enderecos.xlsx')
@@ -49,7 +50,7 @@ for i in range(len(df)):
     else:
         contador = contador + 1
 
-# Criando novo arquivo xlsx com o endereco completo
+#Criando novo arquivo xlsx com o endereco completo
 endreco = df.to_excel('Enderecos.xlsx', index=False)
 
 # Mensagem de alerta informando que a base de endereços foi gerada com sucesso!!
@@ -57,4 +58,3 @@ py.alert('Base Finalizada!')
 
 
 
-"XAU BRIGADO3"
