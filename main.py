@@ -4,13 +4,22 @@ import requests
 import pandas as pd
 import pyautogui as py
 
+contador = 0
 
 #Lendo arquivo com os CEPS.
 df = pd.read_excel(r'ceps.xlsx')
 
 #Iterando sobre cada cep da base.
 for i in range(len(df)):
+    #Gera uma base provisoria a cada 10 consultas para caso haja algum erro e nao precisemos remoçar do zero
+    for cep in range(len(df)):
+        if contador == 10:
+            endereco = df.to_excel('Enderecos.xlsx')
+            contador = 0
+        else:
+            contador = contador + 1
     cep = df.loc[i, 'CEP']
+    #consultando os ceps pela API e retornandno um JSON com os dados requisitados
     link = f'https://viacep.com.br/ws/{cep}/json/'
     requisicao = requests.get(link)
     requisicao_json = requisicao.json()
@@ -29,7 +38,6 @@ for i in range(len(df)):
         logradouro = None
         bairro = None
         complemento = None
-
 
     # Criando novas colunas dentro da base de CEP
     df.loc[i, 'UF'] = uf
