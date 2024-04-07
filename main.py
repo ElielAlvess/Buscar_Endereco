@@ -11,13 +11,6 @@ df = pd.read_excel(r'ceps.xlsx')
 
 #Iterando sobre cada cep da base.
 for i in range(len(df)):
-    #Gera uma base provisoria a cada 10 consultas para caso haja algum erro e nao precisemos remoçar do zero
-    for cep in range(len(df)):
-        if contador == 10:
-            endereco = df.to_excel('Enderecos.xlsx')
-            contador = 0
-        else:
-            contador = contador + 1
     cep = df.loc[i, 'CEP']
     #consultando os ceps pela API e retornandno um JSON com os dados requisitados
     link = f'https://viacep.com.br/ws/{cep}/json/'
@@ -45,6 +38,16 @@ for i in range(len(df)):
     df.loc[i, 'Logradouro'] = logradouro
     df.loc[i, 'Bairro'] = bairro
     df.loc[i, 'Complemento'] = complemento
+
+# Gera uma base provisoria a cada 10 consultas para caso haja algum erro e nao precisemos remoçar do zero
+
+    if contador == 10:
+        endereco = df.to_excel('Enderecos.xlsx')
+        contador = 0
+        print('base provisoria')
+        print(cep)
+    else:
+        contador = contador + 1
 
 # Criando novo arquivo xlsx com o endereco completo
 endreco = df.to_excel('Enderecos.xlsx', index=False)
