@@ -46,4 +46,4 @@ py.alert('Base Finalizada!')
 
 
 
-"XAU BRIGADO"
+"XAU BRIGADO2"
